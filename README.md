@@ -1,5 +1,5 @@
-# Splunk Command NewRelic NRQL
-The [NewRelic NRQL](https://docs.newrelic.com/docs/query-data/nrql-new-relic-query-language/getting-started/introduction-nrql) Command for Splunk app contains the Splunk Generating Command `nrql` which queries New Relic and generates Splunk reports from the query results returned.
+# Splunk Command New Relic NRQL
+The [New Relic NRQL](https://docs.newrelic.com/docs/query-data/nrql-new-relic-query-language/getting-started/introduction-nrql) Command for Splunk app contains the Splunk Generating Command `nrql` which queries New Relic and generates Splunk reports from the query results returned.
 
 ## Syntax:
 ```
@@ -11,9 +11,9 @@ The [NewRelic NRQL](https://docs.newrelic.com/docs/query-data/nrql-new-relic-que
 * Copy `newrelic_nrql_command_for_splunk` directory to `$SPLUNK_HOME/etc/apps/`
 
 ## Configuration:
-* [Create a NewRelic Insights API Query Key](https://docs.newrelic.com/docs/insights/insights-api/get-data/query-insights-event-data-api)
+* [Create a New Relic Insights API Query Key](https://docs.newrelic.com/docs/insights/insights-api/get-data/query-insights-event-data-api)
 * Create a local configuration file `$SPLUNK_HOME/etc/apps/newrelic_nrql_command_for_splunk/local/nrql_connections.conf`
-* Add NewRelic Endpoint, Account ID and Insights API Query Key details in `nrql_connections.conf`
+* Add New Relic Endpoint, Account ID and Insights API Query Key details in `nrql_connections.conf`
 * nrql_connections.conf.spec:
 ```
 [<name>]
