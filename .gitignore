@@ -1,6 +1,6 @@
 # Splunk
-local/
-metadata/local.meta
+**/local/
+**/metadata/local.meta
 
 # MacOS
 .DS_Store
@@ -14,3 +14,6 @@ __pycache__/
 *.py[cod]
 *$py.class
 .venv
+
+# Build Packages
+packages/

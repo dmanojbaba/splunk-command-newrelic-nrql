@@ -1,0 +1,64 @@
+<form hideEdit="true">
+  <label>NRQL Command</label>
+  <description></description>
+  <row>
+    <panel>
+      <html>
+<div style="max-width: 860px;">
+<p>
+  The nrql command queries New Relic and generates Splunk reports from the query results returned.
+</p>
+<h2>Syntax</h2>
+<pre style="margin-left: 6px;">
+| nrql connection="&lt;string&gt;" query="&lt;string&gt;" (output=_raw)?
+</pre>
+<h2>Arguments</h2>
+<p style="margin-bottom: 0; margin-left: 6px;">
+            <b>connection=</b>
+            <i>&lt;string&gt;</i>
+          </p>
+<p style="margin-left: 45px; margin-top: 2px;">
+  Name of a configured New Relic connection in 'nrql_connections.conf'
+</p>
+<p style="margin-bottom: 0; margin-left: 6px;">
+            <b>query=</b>
+            <i>&lt;string&gt;</i>
+          </p>
+<p style="margin-left: 45px; margin-top: 2px;">
+  A valid NRQL query
+</p>
+<p style="margin-bottom: 0; margin-left: 6px;">
+            <b>output=</b>
+            <i>_raw</i>
+          </p>
+<p style="margin-left: 45px; margin-top: 2px;">
+  (optional) Output the returned data without any formatting
+</p>
+Note: New Relic Event Types (tables) and Attributes (columns) in an NRQL query are case-sensitive.
+[e.g.: PageView, JavaScriptError, pageUrl, deviceType, errorMessage, etc.]
+<h2>Examples</h2>
+<p style="margin-left: 6px;">
+  Query New Relic 'prod-us-account' and return results
+</p>
+<pre style="margin-left: 6px;">
+| nrql connection="prod-us-account" query="select * from PageView"
+</pre>
+<p style="margin-left: 6px;">
+  Query New Relic 'test-eu-account' and return results
+</p>
+<pre style="margin-left: 6px;">
+| nrql connection="test-eu-account" query="select count(*) as TotalTransactions from Transaction"
+</pre>
+<p style="margin-left: 6px;">
+  Query New Relic 'prod-us-account' and combine the power of Splunk SPL
+</p>
+<pre style="margin-left: 6px;">
+| nrql connection="prod-us-account" query="select count(*) from PageView facet deviceType since 1 day ago timeseries 1 hour"
+| eval _time=strptime(beginTimeSeconds,"%s")
+| xyseries _time, deviceType, count
+</pre>
+</div>
+      </html>
+    </panel>
+  </row>
+</form>

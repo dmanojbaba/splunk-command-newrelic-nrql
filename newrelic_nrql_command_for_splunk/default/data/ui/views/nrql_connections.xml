@@ -1,0 +1,39 @@
+<form hideEdit="true">
+  <label>NRQL Connections</label>
+  <description></description>
+  <row>
+    <panel>
+      <html>
+<div style="max-width: 860px;">
+<p>
+  Configure New Relic connection in 'nrql_connections.conf'
+</p>
+<ul>
+  <li>Create a New Relic Insights API Query Key</li>
+  <li>Create a local configuration file '$SPLUNK_HOME/etc/apps/newrelic_nrql_command_for_splunk/local/nrql_connections.conf'</li>
+  <li>Add New Relic Endpoint, Account ID and Insights API Query Key details in 'nrql_connections.conf'</li>
+</ul>
+<h2>nrql_connections.conf.spec</h2>
+<pre style="margin-left: 6px;">
+[&lt;name&gt;]
+apiEndpoint = &lt;string&gt;
+accountId = &lt;string&gt;
+queryKey = &lt;string&gt;
+</pre>
+<h2>nrql_connections.conf.example</h2>
+<pre style="margin-left: 6px;">
+[prod-us-account]
+apiEndpoint = insights-api.newrelic.com
+accountId = 1111111
+queryKey = y0ur_ins1ghts_qu3ry_k3y_h3re
+
+[test-eu-account]
+apiEndpoint = insights-api.eu.newrelic.com
+accountId = 1234567
+queryKey = an0ther_ins1ghts_qu3ry_k3y_h3re
+</pre>
+</div>
+      </html>
+    </panel>
+  </row>
+</form>

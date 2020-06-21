@@ -1,0 +1,102 @@
+#!/bin/bash
+
+DOCKER_IMAGE_NAME="splunk/splunk"
+DOCKER_IMAGE_TAG="latest"
+CONTAINER_NAME="docker-splunk-nrql-minion"
+SPLUNK_APP_NAME="newrelic_nrql_command_for_splunk"
+SPLUNK_USERNAME="admin"
+SPLUNK_PASSWORD="password"
+
+help() {
+    echo "usage: minion [option]"
+    echo "  minion help"
+    echo "  minion run [TAG]"
+    echo "  minion start | stop | restart"
+    echo "  minion status"
+    echo "  minion splunk [command]"
+    echo "  minion shell | bash"
+    echo "  minion exec [command]"
+    echo "  minion remove | rm"
+    echo "  minion rmi [TAG]"
+}
+
+run() {
+    if [[ $1 != "" ]]; then
+        DOCKER_IMAGE_TAG=$1
+    fi
+    docker run -d --name ${CONTAINER_NAME} \
+        -p 8000:8000 -p 8089:8089 -p 9997:9997 \
+        -v `pwd`/${SPLUNK_APP_NAME}:/opt/splunk/etc/apps/${SPLUNK_APP_NAME}:rw \
+        -e 'SPLUNK_START_ARGS=--accept-license' \
+        -e 'SPLUNK_PASSWORD='${SPLUNK_PASSWORD} \
+        ${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG}
+}
+
+setup() {
+    splunk edit user ${SPLUNK_USERNAME} -defaultApp ${SPLUNK_APP_NAME}
+}
+
+splunk() {
+    if [[ $# == 0 ]]; then
+        docker exec -u splunk -it ${CONTAINER_NAME} \
+            /opt/splunk/bin/splunk help
+    elif [[ $1 =~ ^(start|stop|restart)$ ]]; then
+        echo "Cannot Execute: splunk $1"
+    else
+        docker exec -u splunk -it ${CONTAINER_NAME} \
+            /opt/splunk/bin/splunk login -auth ${SPLUNK_USERNAME}:${SPLUNK_PASSWORD}
+        docker exec -u splunk -it ${CONTAINER_NAME} \
+            /opt/splunk/bin/splunk $*
+    fi
+}
+
+exec() {
+    docker exec -u splunk -it ${CONTAINER_NAME} $*
+}
+
+shell() {
+    docker exec -u splunk -it ${CONTAINER_NAME} /bin/bash
+}
+
+logs() {
+    docker logs $* ${CONTAINER_NAME}
+}
+
+status() {
+    splunk status
+}
+
+start() {
+    docker start ${CONTAINER_NAME}
+}
+
+stop() {
+    docker stop ${CONTAINER_NAME}
+}
+
+restart() {
+    stop
+    start
+}
+
+remove() {
+    docker rm -fv ${CONTAINER_NAME}
+}
+
+rmi() {
+    if [[ $1 != "" ]]; then
+        DOCKER_IMAGE_TAG=$1
+    fi
+    docker rmi ${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG}
+}
+
+if [[ $1 =~ ^(run|setup|splunk|status|start|stop|restart|exec|logs|rmi|help)$ ]]; then
+    "$@"
+elif [[ $1 =~ ^(shell|bash|sh)$ ]]; then
+    shell
+elif [[ $1 =~ ^(remove|rm)$ ]]; then
+    remove
+else
+    help
+    exit 1
+fi
