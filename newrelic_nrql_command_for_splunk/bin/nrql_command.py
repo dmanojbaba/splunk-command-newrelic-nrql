@@ -2,11 +2,17 @@ import os
 import sys
 import json
 import requests
+from os import path
+from sys import path as sys_path
 
 # import urllib.error
 # import urllib.parse
 # import urllib.request
 from six.moves import urllib as urllib
+
+module_dir = path.dirname(path.realpath(__file__))
+packages = path.join(module_dir, "packages")
+sys_path.insert(0, path.join(packages))
 
 import splunk.entity as entity
 from splunklib.searchcommands import (

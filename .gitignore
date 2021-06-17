@@ -16,4 +16,4 @@ __pycache__/
 .venv
 
 # Build Packages
-packages/
+/build_packages/

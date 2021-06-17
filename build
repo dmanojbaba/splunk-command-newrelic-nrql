@@ -1,9 +1,8 @@
 #!/bin/bash
 
-PACKAGES_DIR="packages"
+BUILD_PACKAGES_DIR="build_packages"
 SPLUNK_APP_NAME="newrelic_nrql_command_for_splunk"
 SPLUNK_APP_VERSION=`cat ${SPLUNK_APP_NAME}/default/app.conf | grep version | awk -F" = " '{print $2}'`
 SPLUNK_APP_TAR=${SPLUNK_APP_NAME}"-"${SPLUNK_APP_VERSION}".tgz"
 
-mkdir -p ${PACKAGES_DIR}
-gtar -zcv ${SPLUNK_APP_NAME} > ${PACKAGES_DIR}/${SPLUNK_APP_TAR}
+gtar -zcv ${SPLUNK_APP_NAME} > ${BUILD_PACKAGES_DIR}/${SPLUNK_APP_TAR}
