@@ -1,0 +1,38 @@
+name: "main-ci"
+
+on:
+  push:
+    branches:
+      - '**'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+
+    - name: Build
+      run: |
+        tar -zcvf newrelic_nrql_command_for_splunk.tgz newrelic_nrql_command_for_splunk
+
+    - name: Upload Artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: artifact
+        path: newrelic_nrql_command_for_splunk.tgz
+
+    - name: AppInspect
+      uses: splunk/appinspect-cli-action@v1
+      with:
+        app_path: newrelic_nrql_command_for_splunk.tgz
+        result_file: appinspect_result.json
+
+    - name: Upload Result
+      uses: actions/upload-artifact@v2
+      if: always()
+      with:
+        name: result
+        path: appinspect_result.json
